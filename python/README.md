@@ -38,6 +38,14 @@ This library was tested using [pdf417gen](https://pypi.org/project/pdf417gen/) t
 * Error Corrections: Missing data due marks concealing barcode
 * Character type transitions (Upper, Lower, Mixed and Punctuation)
 
+## Roadmap
+
+- [x] Initial port of C# to Python
+- [x] Create tests for functionality
+- [x] Create fuzzy testing of decoder
+- [ ] Convert THRESH_OTSU image processing to use original algorithm written in C# or alternative
+- [ ] Performance testing and optimizations
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
