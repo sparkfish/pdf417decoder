@@ -1,5 +1,5 @@
 # pdf417decoder
-![Image of a PDF417 barcode](https://github.com/sparkfish/pdf417decoder/blob/dev/python/images/haiku.png?raw=true)
+![Image of a PDF417 barcode](https://raw.githubusercontent.com/sparkfish/pdf417decoder/dev/python/images/haiku.png?id=1)
 
 pdf417decoder is a pure Python library for decoding [PDF417 barcodes](https://en.wikipedia.org/wiki/PDF417).
 
