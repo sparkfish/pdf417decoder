@@ -33,10 +33,10 @@ while (True):
     test_number += 1
     
     # Randomize barcode settings
-    columns = random.randint(10,15)
+    columns = 10 #random.randint(10,15)
     security_level = random.randint(2,5)
     scale = random.randint(3,5)
-    ratio = random.randint(2,5)
+    ratio = random.randint(2,4)
     
     # With random text valid for a PDF417 barcode
     text_length = random.randint(1, 5) * 100
@@ -75,10 +75,10 @@ while (True):
 
     # Record Success or Failure of decoding
     if (decoded == barcode.EncodedData):
-        successes = test_result[1] + 1
-        failures = test_result[2]
+        successes = test_result[5] + 1
+        failures = test_result[6]
         total = successes + failures
-        total_decode = test_result[3] + decode_time
+        total_decode = test_result[7] + decode_time
         avg_decode = round(total_decode / total, 2)
         
         print(f"SUCCESS #{successes} out of {total}: Columns: {columns} Security: {security_level} Scale: {scale} Ratio: {ratio} Length: {text_length} Average time to Decode: {avg_decode} seconds")
@@ -86,10 +86,10 @@ while (True):
         # Add updated test result for this random barcode configuration back to the test results.
         test_results.append((columns, security_level, scale, ratio, text_length, successes, failures, total_decode))
     else:
-        successes = test_result[1]
-        failures = test_result[2] + 1
+        successes = test_result[5]
+        failures = test_result[6] + 1
         total = successes + failures
-        total_decode = test_result[3] + decode_time
+        total_decode = test_result[7] + decode_time
         avg_decode = round(total_decode / total, 2)
         
         print(f"FAILURE #{failures} out of {total}: Columns: {columns} Security: {security_level} Scale: {scale} Ratio: {ratio} Length: {text_length} Average time to Decode: {avg_decode} seconds")
