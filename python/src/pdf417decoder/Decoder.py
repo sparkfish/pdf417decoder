@@ -1164,13 +1164,13 @@ class PDF417Decoder:
             for index in range(6):
                 val = temp >> (40 - 8 * index)
                 val_byte = val % 256
-                binary_data.Add(val_byte);
+                binary_data.append(val_byte);
 
         # left over
         seg_len -= 5 * blocks
         
         while (seg_len > 0):
-            binary_data.add(self.codewords[codewords_ptr])
+            binary_data.append(self.codewords[codewords_ptr])
             codewords_ptr += 1
             seg_len -= 1
 
@@ -1189,11 +1189,10 @@ class PDF417Decoder:
                 self.codewords_ptr += 1
 
             # convert number to a string
-            num_str = str(temp)
+            num_str = str(temp)[1:] # skip first digit, it is 1
             
-            # convert string to bytes (skip first digit, it is 1)
-            for index in range(1, len(num_str)):
-                binary_data.add(bytes(num_str[index], 'utf-8'))
+            for num in num_str:
+                binary_data.append(ord(num))
                 
             seg_len -= block_len
 
@@ -1207,7 +1206,7 @@ class PDF417Decoder:
         black_white = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
         
         # Save the final cleaned up black and white image.
-        #PIL.fromarray(black_white).save("black_and_white.png")
+        PIL.fromarray(black_white).save("black_and_white.png")
         
         # Load a Black and White created from C# version.
         # bwimage = PIL.open("BlackWhiteImage.png").convert('RGB')
