@@ -949,7 +949,7 @@ class PDF417Decoder:
 
             # current pixel is white
             # go right to the next transition from white to black
-            x = pos_x - 1
+            x = pos_x + 1
             while (True):
                 # matching y coordinate
                 y = pos_y + int((x - pos_x) * delta_y / delta_x)
@@ -1206,9 +1206,9 @@ class PDF417Decoder:
         black_white = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
         
         # Save the final cleaned up black and white image.
-        PIL.fromarray(black_white).save("black_and_white.png")
+        #PIL.fromarray(black_white).save("black_and_white.png")
         
-        # Load a Black and White created from C# version.
+        #Load a Black and White created from C# version.
         # bwimage = PIL.open("BlackWhiteImage.png").convert('RGB')
         # black_white_color = np.asarray(bwimage)
         # threshold_result = cv2.threshold(black_white_color, 0, 255, cv2.THRESH_BINARY)
