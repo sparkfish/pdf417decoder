@@ -20,7 +20,7 @@ from PIL import Image as PIL
 from pdf417decoder import PDF417Decoder
 
 image = PIL.open("barcode.png")
-decoder = PDF417Decoder(barcode.image)
+decoder = PDF417Decoder(image)
 
 if (decoder.decode() > 0):
     decoded = decoder.barcode_data_index_to_string(0)
@@ -43,6 +43,8 @@ This library was tested using [pdf417gen](https://pypi.org/project/pdf417gen/) t
 - [x] Initial port of C# to Python
 - [x] Create tests for functionality
 - [x] Create fuzzy testing of decoder
+- [x] Decode from PIL.Image
+- [ ] Decode from Numpy Array
 - [ ] Convert THRESH_OTSU image processing to use original algorithm written in C# or alternative
 - [ ] Performance testing and optimizations
 
