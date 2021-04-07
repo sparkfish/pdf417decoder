@@ -5,6 +5,7 @@ import cv2
 import time
 import csv
 import cProfile
+import zxing
 
 from PIL import Image
 from pdf417decoder import PDF417Decoder
@@ -21,7 +22,7 @@ class BarcodeTest:
         self.crappify()
 
     def crappify(self):
-        crap_image = np.array(self.OriginalImage) #.rotate(1))
+        crap_image = np.array(self.OriginalImage.rotate(random.uniform(-2,2)))
         self.CrappifiedNumpy = cv2.blur(crap_image,(3,3))
         self.CrappifiedImage = Image.fromarray(self.CrappifiedNumpy, 'RGB')
 
@@ -45,6 +46,59 @@ def test_image(filepath, expected_decode):
             print("Failure: No barcode detected")
     except:
         print("Failure: Exception occurred")
+        
+def test_against_zxing():
+    test_number = 0
+    success = 0
+    failure = 0
+    zxing_success = 0
+    zxing_failure = 0
+    while (True):
+        test_number += 1
+    
+        # Randomize barcode settings
+        columns = 10 #random.randint(5,15)
+        security_level = 3 #random.randint(2,5)
+        scale = 2 #random.randint(2,5)
+        ratio = 2 #random.randint(2,4)
+        
+        # With random text valid for a PDF417 barcode
+        text_length = 300 #random.randint(1, 5) * 50
+        text = ''.join(random.choices(string.ascii_letters + string.digits + "&,:#-.$/+%* =^;<>@[\\]_'~!|()?{}", k=text_length))
+        
+        # and Create the barcode.
+        barcode = BarcodeTest(text, columns, security_level, scale, ratio)
+        barcode.CrappifiedImage.save("barcode.png")
+
+        # Start decoding
+        try:
+            reader = zxing.BarCodeReader()
+            decodedZxing = reader.decode("barcode.png", possible_formats="PDF_417").parsed
+        except:
+            decodedZxing = ''
+        
+        try:
+            decoder = PDF417Decoder(barcode.CrappifiedImage)
+            barcode_count = decoder.decode()
+            
+            if (barcode_count == 0):
+                decoded = ''
+            else:
+                decoded = decoder.barcode_data_index_to_string(0)
+        except:
+            decoded = ''
+
+        if (decoded == barcode.EncodedData):
+            success += 1
+        else:
+            failure += 1
+            
+        if (decodedZxing == barcode.EncodedData):
+            zxing_success += 1
+        else:
+            zxing_failure += 1
+            
+        print(f"Success: {success} - Failure: {failure} - ZXing Success: {zxing_success} - ZXing: Failure {zxing_failure} - Total: {test_number}")
 
 def fuzz_testing():
     # Collection of test result successes, failures and decode time for this test run.
@@ -56,13 +110,13 @@ def fuzz_testing():
         test_number += 1
         
         # Randomize barcode settings
-        columns = 10 #random.randint(10,15)
+        columns = random.randint(5,15)
         security_level = random.randint(2,5)
-        scale = random.randint(3,5)
+        scale = random.randint(2,5)
         ratio = random.randint(2,4)
         
         # With random text valid for a PDF417 barcode
-        text_length = random.randint(1, 5) * 100
+        text_length = 300 #random.randint(1, 5) * 50
         text = ''.join(random.choices(string.ascii_letters + string.digits + "&,:#-.$/+%* =^;<>@[\\]_'~!|()?{}", k=text_length))
         
         # and Create the barcode.
@@ -132,8 +186,14 @@ def fuzz_testing():
                 
                 write.writerow(fields)
                 write.writerows(test_results)
+                
+def save_barcode_image(filename: string, encodedData: string, columns: int, security_level: int, scale: int, ratio: int):
+    barcode = BarcodeTest(encodedData, columns, security_level, scale, ratio)
+    barcode.CrappifiedImage.save(filename)
 
 def main():
-    test_image("DL-2.jpg", "")
-    
-cProfile.run("main()")
+    test_image("barcode.png", "3s&H{%NKxxc\Q<&Y$Nx-^lN>3Z k.[XEXYJe,/%r5LET&|@ou5|,Cd.n%S!k9f7l^QEWxke68Q+]lKCITQ?o!</\n.|8n0+ |4jL")
+ 
+#main()
+test_against_zxing()
+#cProfile.run("main()")
