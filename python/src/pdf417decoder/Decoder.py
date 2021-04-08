@@ -1150,15 +1150,15 @@ class PDF417Decoder:
 
         # loop for blocks 
         for block in range(blocks):
-            temp = (900 ** 4) * self.codewords[codewords_ptr]
-            codewords_ptr += 1
-            temp += (900 ** 3) * self.codewords[codewords_ptr]
-            codewords_ptr += 1
-            temp += (900 ** 2) * self.codewords[codewords_ptr]
-            codewords_ptr += 1
-            temp += (900 ** 1) * self.codewords[codewords_ptr]
-            codewords_ptr += 1
-            temp += self.codewords[codewords_ptr]
+            temp = (900 ** 4) * self.codewords[self.codewords_ptr]
+            self.codewords_ptr += 1
+            temp += (900 ** 3) * self.codewords[self.codewords_ptr]
+            self.codewords_ptr += 1
+            temp += (900 ** 2) * self.codewords[self.codewords_ptr]
+            self.codewords_ptr += 1
+            temp += (900 ** 1) * self.codewords[self.codewords_ptr]
+            self.codewords_ptr += 1
+            temp += self.codewords[self.codewords_ptr]
             
             # convert to bytes
             for index in range(6):
@@ -1170,8 +1170,8 @@ class PDF417Decoder:
         seg_len -= 5 * blocks
         
         while (seg_len > 0):
-            binary_data.append(self.codewords[codewords_ptr])
-            codewords_ptr += 1
+            binary_data.append(self.codewords[self.codewords_ptr] % 256)
+            self.codewords_ptr += 1
             seg_len -= 1
 
     def codewords_to_numeric(self, binary_data: bytearray, seg_len: int):

@@ -192,8 +192,8 @@ def save_barcode_image(filename: string, encodedData: string, columns: int, secu
     barcode.CrappifiedImage.save(filename)
 
 def main():
-    test_image("barcode.png", "3s&H{%NKxxc\Q<&Y$Nx-^lN>3Z k.[XEXYJe,/%r5LET&|@ou5|,Cd.n%S!k9f7l^QEWxke68Q+]lKCITQ?o!</\n.|8n0+ |4jL")
+    test_image("BarcodePackage.png", "3s&H{%NKxxc\Q<&Y$Nx-^lN>3Z k.[XEXYJe,/%r5LET&|@ou5|,Cd.n%S!k9f7l^QEWxke68Q+]lKCITQ?o!</\n.|8n0+ |4jL")
  
-#main()
-test_against_zxing()
+main()
+#test_against_zxing()
 #cProfile.run("main()")
