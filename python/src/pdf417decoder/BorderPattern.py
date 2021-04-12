@@ -63,7 +63,7 @@ class BorderPattern:
         else:
             return int(math.ceil(x - 0.5))
 
-    def __init__(self, stop_pattern: bool, symbol_list: list[BorderSymbol]):
+    def __init__(self, stop_pattern: bool, symbol_list: list):
         self.center_x = 0
         self.center_y = 0
         self.delta_x = 0

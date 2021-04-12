@@ -67,12 +67,12 @@ class PDF417Decoder:
     Y_STEP = [1, -1, 2, -2, 3, -3]
 
     @property
-    def barcodes_info(self) -> list[BarcodeInfo]:
+    def barcodes_info(self) -> list:
         """ Returned array of barcodes binary data plus extra information """
         return self._barcodes_info
 
     @barcodes_info.setter
-    def barcodes_info(self, value: list[BarcodeInfo]):    
+    def barcodes_info(self, value: list):    
         self._barcodes_info = value
 
     def __init__(self, input_image: PIL.Image):
@@ -101,7 +101,7 @@ class PDF417Decoder:
             return 0
 
         # reset results list
-        self.barcodes_extra_info_list = list[BarcodeInfo]()
+        self.barcodes_extra_info_list = list()
         
         # loop for all barcodes found
         for barcode_area in self.barcode_list:
@@ -154,7 +154,7 @@ class PDF417Decoder:
         
         self.barcodes_info = self.barcodes_extra_info_list
         
-        self.barcodes_data = list[bytearray]()
+        self.barcodes_data = list()
         
         for i in range(barcodes_count):
                 self.barcodes_data.append(self.barcodes_info[i].barcode_data)
@@ -185,11 +185,11 @@ class PDF417Decoder:
         return decoded
 
     def locate_barcodes(self) -> bool:
-        self.bar_pos = list[int]([0] * self.image_width)
-        self.barcode_list = list[BarcodeArea]()
+        self.bar_pos = list([0] * self.image_width)
+        self.barcode_list = list()
         
-        start_symbols = list[list[BorderSymbol]]()
-        stop_symbols = list[list[BorderSymbol]]()
+        start_symbols = list()
+        stop_symbols = list()
         
         scan = 0
         
@@ -203,7 +203,7 @@ class PDF417Decoder:
                 self.border_signature(start_symbols, self.START_SIG, row)
                 self.border_signature(stop_symbols, self.STOP_SIG, row)
             
-            remove_symbols = list[BorderSymbol]()
+            remove_symbols = list()
             # remove all lists with less than 18 symbols
             for index in range(len(start_symbols)):
                 if (len(start_symbols[index]) < 18):
@@ -212,7 +212,7 @@ class PDF417Decoder:
             for remove in remove_symbols:
                 start_symbols.remove(remove)
                 
-            remove_symbols = list[BorderSymbol]()
+            remove_symbols = list()
             # remove all lists with less than 18 symbols
             for index in range(len(stop_symbols)):
                 if (len(stop_symbols[index]) < 18):
@@ -311,7 +311,7 @@ class PDF417Decoder:
         # make sure there are at least 8 black and white bars
         return self.bar_end > 8
 
-    def border_signature(self, border_symbols: list[list[BorderSymbol]], signature: list[int], row: int):
+    def border_signature(self, border_symbols: list, signature: list, row: int):
             # search for start or stop signature
             bar_ptr_end = self.bar_end - 8
             
@@ -336,7 +336,7 @@ class PDF417Decoder:
                 new_symbol = BorderSymbol(self.bar_pos[bar_ptr], row, self.bar_pos[bar_ptr + 8])
 
                 if (len(border_symbols) == 0):
-                    new_symbol_list = list[BorderSymbol]([new_symbol])
+                    new_symbol_list = list([new_symbol])
                     border_symbols.append(new_symbol_list)
                 else:
                     # try to match it to one of the existing lists
@@ -355,13 +355,13 @@ class PDF417Decoder:
                         
                     # start a new list
                     if (new_symbol is not None):
-                        new_symbol_list = list[BorderSymbol]([new_symbol])
+                        new_symbol_list = list([new_symbol])
                         border_symbols.append(new_symbol_list)
 
                 # continue search after start signature
                 bar_ptr += 6;
 
-    def match_start_and_stop(self, start_list: list[BorderSymbol], stop_list: list[BorderSymbol]) -> bool:
+    def match_start_and_stop(self, start_list: list, stop_list: list) -> bool:
         # calculate start and stop patterns relative to image coordinates
         start_border = BorderPattern(False, start_list)
         stop_border = BorderPattern(True, stop_list)
@@ -691,7 +691,7 @@ class PDF417Decoder:
     def get_codewords(self) -> bool:
         try:
             # codewords array
-            self.codewords = list[int]([0] * (self.data_columns * self.data_rows))
+            self.codewords = list([0] * (self.data_columns * self.data_rows))
             cwptr = 0
             
             erasures_count = 0
@@ -1202,9 +1202,11 @@ class PDF417Decoder:
         self.image_height = self.input_image.height
         
         np_image = np.array(self.input_image)
-        gray = cv2.cvtColor(np_image, cv2.COLOR_BGR2GRAY)
+        if np_image.shape[2] >= 3:
+            gray = cv2.cvtColor(np_image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = np_image
         black_white = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-        
         # Save the final cleaned up black and white image.
         #PIL.fromarray(black_white).save("black_and_white.png")
         

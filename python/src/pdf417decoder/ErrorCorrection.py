@@ -2,12 +2,12 @@ from typing import Tuple
 from pdf417decoder import Modulus
 from pdf417decoder.Polynomial import ONE, Polynomial, ZERO
 
-def test_codewords(codewords: list[int], error_correction_length: int) -> tuple[int, list[int]]:
+def test_codewords(codewords: list, error_correction_length: int) -> tuple:
     """ Decode the received codewords """
     poly_codewords = Polynomial(0, 0, codewords)
 
     # create syndrom coefficients array
-    syndrome = list[int]([0] * error_correction_length)
+    syndrome = list([0] * error_correction_length)
 
     # assume new errors
     error = False
@@ -109,7 +109,7 @@ def euclidean_algorithm(error_correction_length: int, poly_r: Polynomial) -> Tup
 
     return (True, error_locator, error_evaluator)
 
-def find_error_locations(error_locator: Polynomial) -> list[int]:
+def find_error_locations(error_locator: Polynomial) -> list:
     """
         Finds the error locations as a direct application of Chien's search
         error locations are not error positions within codewords array
@@ -117,7 +117,7 @@ def find_error_locations(error_locator: Polynomial) -> list[int]:
 
     # This is a direct application of Chien's search
     locator_degree = error_locator.degree;
-    error_locations = list[int]([0] * locator_degree)
+    error_locations = list([0] * locator_degree)
     error_count = 0
     
     for i in range(1, Modulus.MOD):
@@ -137,7 +137,7 @@ def find_error_locations(error_locator: Polynomial) -> list[int]:
 def find_formal_derivatives(error_locator: Polynomial) -> Polynomial:
     """ Finds the error magnitudes by directly applying Forney's Formula """
     locator_degree = error_locator.degree
-    derivative_coefficients = list[int]([0] * locator_degree)
+    derivative_coefficients = list([0] * locator_degree)
     
     for i in range(1, locator_degree + 1):
         derivative_coefficients[locator_degree - i] = Modulus.multiply(i, error_locator.get_coefficient(i))

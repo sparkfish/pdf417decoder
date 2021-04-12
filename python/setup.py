@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pdf417decoder",
-    version="1.0.3",
+    version="1.0.4",
     author="Sparkfish LLC",
     author_email="packages@sparkfish.com",
     description="A PDF417 barcode decoder",
@@ -22,7 +22,7 @@ setuptools.setup(
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
-    python_requires=">=3.9",    
+    python_requires=">=3.7",    
     install_requires=[
         "numpy >= 1.20.1",
         "opencv-python >= 4.5.1.48",

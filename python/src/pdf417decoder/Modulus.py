@@ -1,8 +1,8 @@
 # PDF 417 uses a Base 929 encoding
 MOD = 929
 
-exp_table = list[int]([0] * MOD)
-log_table = list[int]([0] * MOD)
+exp_table = list([0] * MOD)
+log_table = list([0] * MOD)
 
 # Populate exponent and log tables 
 current_value = 1

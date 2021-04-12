@@ -4,12 +4,12 @@ from pdf417decoder import Modulus
 class Polynomial:
 
     @property
-    def coefficients(self) -> list[int]:
+    def coefficients(self) -> list:
         """ Polynomial coefficients """
         return self._coefficients
 
     @coefficients.setter
-    def coefficients(self, value: list[int]):    
+    def coefficients(self, value: list):    
         self._coefficients = value
 
     @property
@@ -30,12 +30,12 @@ class Polynomial:
     def degree(self, value: int):    
         self._degree = value
 
-    def __init__(self, degree: int, coefficient: int, coefficients: list[int] = None):
+    def __init__(self, degree: int, coefficient: int, coefficients: list = None):
         if (coefficients is None):
             """ Create a polynomial with one leading non zero value """
             self.degree = degree
             self.length = degree + 1
-            self.coefficients = list[int]([0] * self.length)
+            self.coefficients = list([0] * self.length)
             self.coefficients[0] = coefficient
             return
         
@@ -52,14 +52,14 @@ class Polynomial:
 
             if (first_non_zero == self.length):
                 # all coefficients are zeros
-                self.coefficients = list[int]([0])
+                self.coefficients = list([0])
                 self.length = 1
             else:
                 # new length
                 self.length -= first_non_zero
 
                 # create shorter coefficients array
-                self.coefficients = list[int]([0] * self.length)
+                self.coefficients = list([0] * self.length)
 
                 # copy non zero part to new array
                 # Array.Copy(Coefficients, FirstNonZero, this.Coefficients, 0, PolyLength);
@@ -111,7 +111,7 @@ class Polynomial:
 
     def make_negative(self) -> 'Polynomial':
         """ Returns a Negative version of this instance """
-        result = list[int]([0] * self.length)
+        result = list([0] * self.length)
 
         for i in range(self.length):
             result[i] = Modulus.negate(self.coefficients[i])
@@ -134,7 +134,7 @@ class Polynomial:
             smaller = other.coefficients
             larger = self.coefficients
 
-        result = list[int]([0] * len(larger))
+        result = list([0] * len(larger))
         delta = len(larger) - len(smaller)
 
         # Copy high-order terms only found in higher-degree polynomial's coefficients
@@ -160,7 +160,7 @@ class Polynomial:
         """ Multiply two polynomials """
         if (self.is_zero or other.is_zero): return ZERO
 
-        result = list[int]([0] * (self.length + other.length - 1))
+        result = list([0] * (self.length + other.length - 1))
 
         for i in range(self.length):
             coeff = self.coefficients[i]
@@ -174,7 +174,7 @@ class Polynomial:
         if (constant == 0): return ZERO
         if (constant == 1): return self
 
-        result = list[int]([0] * self.length)
+        result = list([0] * self.length)
 
         for i in range(self.length):
             result[i] = Modulus.multiply(self.coefficients[i], constant)
@@ -185,7 +185,7 @@ class Polynomial:
         """ Multipies by a Monomial """
         if (constant == 0): return ZERO
 
-        result = list[int]([0] * (self.length + degree))
+        result = list([0] * (self.length + degree))
 
         for i in range(self.length):
             result[i] = Modulus.multiply(self.coefficients[i], constant)
@@ -203,5 +203,5 @@ class Polynomial:
 
 
 
-ZERO = Polynomial(0, 0, list[int]([0]))
-ONE = Polynomial(0, 0, list[int]([1]))
+ZERO = Polynomial(0, 0, list([0]))
+ONE = Polynomial(0, 0, list([1]))

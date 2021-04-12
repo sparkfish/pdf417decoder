@@ -15,7 +15,7 @@ PUNCT_TO_TEXT = bytearray([59, 60, 62, 64, 91, 92, 93, 95, 96, 126, 33, 13, 9, 4
 #   18 bits symbol (bit 29 to bit 12)
 #   2 bits cluster (bit 11 to bit 10) 
 #   10 bits codeword (bit 9 to bit 0) 
-SYMBOL_TABLE = list[int]([ \
+SYMBOL_TABLE = list([ \
     0x0000c802, 0x00015805, 0x0001e808, 0x00024009, 0x0002780a, 0x0002d00b, 0x0004c80c, 0x0005580f, \
 	0x0005b012, 0x0005e812, 0x00064014, 0x00067815, 0x00092015, 0x00095818, 0x0009b018, 0x0009e81b, \
 	0x000a401b, 0x000a781d, 0x000db01d, 0x000e142c, 0x000e401f, 0x000ea42f, 0x000f3432, 0x000fc434, \
