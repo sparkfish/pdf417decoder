@@ -103,7 +103,7 @@ def test_against_zxing():
 def fuzz_testing():
     # Collection of test result successes, failures and decode time for this test run.
     fields = ['Columns', 'Security Level', 'Scale', 'Ratio', 'Length', 'Successes', 'Failures', 'Average Decode Time'] 
-    test_results = list[(int, int, int, int, int, int, int, float)]()
+    test_results = list()
     test_number = 0
 
     while (True):
