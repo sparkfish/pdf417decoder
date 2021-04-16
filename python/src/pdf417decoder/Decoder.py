@@ -1159,6 +1159,7 @@ class PDF417Decoder:
             temp += (900 ** 1) * self.codewords[self.codewords_ptr]
             self.codewords_ptr += 1
             temp += self.codewords[self.codewords_ptr]
+            self.codewords_ptr += 1
             
             # convert to bytes
             for index in range(6):
