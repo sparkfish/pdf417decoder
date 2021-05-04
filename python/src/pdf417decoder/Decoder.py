@@ -1203,7 +1203,7 @@ class PDF417Decoder:
         self.image_height = self.input_image.height
         
         np_image = np.array(self.input_image)
-        if np_image.shape[2] >= 3:
+        if (len(np_image.shape) > 2):
             gray = cv2.cvtColor(np_image, cv2.COLOR_BGR2GRAY)
         else:
             gray = np_image

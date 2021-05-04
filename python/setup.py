@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pdf417decoder",
-    version="1.0.5",
+    version="1.0.6",
     author="Sparkfish LLC",
     author_email="packages@sparkfish.com",
     description="A PDF417 barcode decoder",
