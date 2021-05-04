@@ -1219,9 +1219,8 @@ class PDF417Decoder:
         # threshold_result_1 = threshold_result[1]
 
         self.image_matrix = np.zeros((self.image_height, self.image_width), dtype=bool)
-        for y in range(self.image_height):
-            for x in range(self.image_width):
-                self.image_matrix[y,x] = (black_white[y][x] != 255)
-                #self.image_matrix[y,x] = (threshold_result_1[y][x][0] != 255)
+        
+        mask = np.where(black_white[:,:] != 255)
+        self.image_matrix[mask] = True
         
         return True
