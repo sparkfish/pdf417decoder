@@ -254,61 +254,20 @@ class PDF417Decoder:
         self.image_matrix = rev_image_matrix
 
     def scan_line(self, row: int) -> bool:
-# 		"""Convert image line to black and white bars"""
+        """Convert image line to black and white bars"""
         
-        col = 0
+        row_data = self.image_matrix[row]
+        d = np.diff(row_data) != 0
+        flatnonzero_d = np.flatnonzero(d) + 1
+        idx = np.concatenate(([0], flatnonzero_d))
+        c = np.diff(np.concatenate((idx, [len(row_data)])))
+        bars = list(zip(idx, row_data[idx], c))
         
-        while (col <self.image_width):
-            # look for first white pixel
-            if (not self.image_matrix[row, col]):
-                break
-            col += 1
-    
-        # No transition found
-        if (col == self.image_width):
-            return False
-
-        col += 1
-        while (col <self.image_width):
-            # Check if pixel is black and if so, break
-            if (self.image_matrix[row, col]):
-                break
-            col += 1
-            
-        # No transition found
-        if (col == self.image_width):
-            return False
-
-        # save first black pixel
         self.bar_end = 0
-        self.bar_pos[self.bar_end] = col
-        self.bar_end += 1
-        
-        # loop for pairs
-        while (True):
-            # look for end of black bar
-            while (col < self.image_width and self.image_matrix[row, col] == True):
-                col += 1
-            
-            # make sure last transition was black to white
-            if (col == self.image_width):
-                 self.bar_end -= 1
-
-            # save white bar position
-            self.bar_pos[self.bar_end] = col
+        for bar in bars:
+            self.bar_pos[self.bar_end] = bar[0] + bar[2]
             self.bar_end += 1
-            
-            while (col < self.image_width and self.image_matrix[row, col] == False):
-                col += 1
 
-            if (col == self.image_width):
-                break
-            
-            # save black bar position
-            self.bar_pos[self.bar_end] = col
-            self.bar_end += 1
-      
-        # make sure there are at least 8 black and white bars
         return self.bar_end > 8
 
     def border_signature(self, border_symbols: list, signature: list, row: int):
