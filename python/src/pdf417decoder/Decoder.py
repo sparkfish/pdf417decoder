@@ -1158,8 +1158,6 @@ class PDF417Decoder:
 
     def convert_image(self) -> bool:
         """ Convert image to black and white boolean matrix """
-        self.image_width = self.input_image.width
-        self.image_height = self.input_image.height
         
         np_image = np.array(self.input_image)
         if (len(np_image.shape) > 2):
@@ -1167,6 +1165,13 @@ class PDF417Decoder:
         else:
             gray = np_image
         black_white = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
+        
+        # padding with single white line at the leftmost of the image
+#        if (sum(black_white[:, 0]) / 255) / black_white.shape[0] < 1:
+#            black_white = np.concatenate([np.full((black_white.shape[0],1), fill_value=255, dtype=black_white.dtype), black_white], axis=1)
+
+        self.image_height, self.image_width = black_white.shape[:2]
+        
         # Save the final cleaned up black and white image.
         #PIL.fromarray(black_white).save("black_and_white.png")
         
