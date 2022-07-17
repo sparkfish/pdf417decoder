@@ -1167,8 +1167,8 @@ class PDF417Decoder:
         black_white = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
         
         # padding with single white line at the leftmost of the image
-#        if (sum(black_white[:, 0]) / 255) / black_white.shape[0] < 1:
-#            black_white = np.concatenate([np.full((black_white.shape[0],1), fill_value=255, dtype=black_white.dtype), black_white], axis=1)
+        if (sum(black_white[:, 0]) / 255) / black_white.shape[0] < 1:
+            black_white = np.concatenate([np.full((black_white.shape[0],1), fill_value=255, dtype=black_white.dtype), black_white], axis=1)
 
         self.image_height, self.image_width = black_white.shape[:2]
         
